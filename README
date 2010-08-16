@@ -42,7 +42,7 @@
 
     # now you should be able to access the api resources by using the client instance. 
     # example:
-    info = client.get_info
+    info = client.info_get
     => #<GanetiInfo:0x10151bb78>
 
     # most methods return an object. When you use .to_json on an object, you get the json object returned
