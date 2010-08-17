@@ -58,7 +58,7 @@ module Ganeti
         #   GanetiInfo object
         def info_get
             url = get_url("info")
-            response_body = JSON.parse(send_request("GET", url))
+            response_body = send_request("GET", url)
 
             create_class("GanetiInfo")
  
@@ -85,8 +85,7 @@ module Ganeti
         #   Array of all available instances. The array items contain a GanetiInstance object
         def instances_get(bulk = 0)
             url = get_url("instances", {"bulk" => bulk})
-            body = JSON.generate({"bulk" => bulk})
-            response_body = JSON.parse(send_request("GET", url))
+            response_body = send_request("GET", url)
 
             create_class("GanetiInstance")
 
@@ -100,13 +99,16 @@ module Ganeti
         # If the options bool dry-run argument is provided, the job will not be actually executed, only the pre-execution checks will be done. 
         # Query-ing the job result will return, in boty dry-run and normal case, the list of nodes selected for the instance
         #
+        # Make sure the instance_name resolves!!
+        #
         # Build parameters dict, optional parameters need to be
         # excluded to not cause issues with rapi.
         #  
         # Example:
         #      info = {
         #              'hypervisor'    => 'kvm'    ,               'disk_template' => 'plain',
-        #              'pnode'         => 'node.netronix.be',      'name'          => 'vm1.netronix.be',   'os'    => 'debootstrap+lucid', 
+        #              'pnode'         => 'node.netronix.be',      'instance_name' => 'vm1.netronix.be',   'os'    => 'debootstrap+lucid',
+        #              'name'          => 'vm1.netronix.be',
         #              'vcpus'         => '4',                     'memory'        => '4096',              'disks' => [25600],
         #              'kernel-path'   => '/boot/vmlinuz-2.6-kvmU'
         #             }
@@ -120,8 +122,10 @@ module Ganeti
         def instance_create(info, dry_run = 0)
             params = {
                         'hypervisor'    => info['hypervisor'],  'disk_template' => info['disk_template'],
-                        'pnode'         => info['pnode'],       'name'          => info['iname'],           'os'    => info['os'], 
-                        'vcpus'         => info['vcpus'],       'memory'        => info['memory'],          'disks' => info['disks']
+                        'pnode'         => info['pnode'],       'instance_name' => info['instance_name'],   
+                        'name'          => info['instance_name'],
+                        'os'            => info['os'],          'vcpus'         => info['vcpus'],       
+                        'memory'        => info['memory'],      'disks' => info['disks']
                     }
 
             # Add secondary node
@@ -149,7 +153,7 @@ module Ganeti
         #   GanetiInstance object
         def instance_get(name)
             url = get_url("instances/#{name}")
-            response_body = JSON.parse(send_request("GET", url))
+            response_body = send_request("GET", url)
 
             create_class("GanetiInstance")
 
@@ -252,7 +256,7 @@ module Ganeti
         #   nostartup: 0|1 (optional)
         #
         # Return:
-        #   ?
+        #   job id
         def instance_reinstall(name, os_name, nostartup = 0)
             url = get_url("instances/#{name}/reinstall", {"os" => os_name, "nostartup" => nostartup})
             response_body = send_request("POST", url)
@@ -320,7 +324,7 @@ module Ganeti
         #   Array of tags
         def instance_get_tags(name)
             url = get_url("instances/#{name}/tags")
-            response_body = JSON.parse(send_request("GET", url))
+            response_body = send_request("GET", url)
 
             return response_body
         end
@@ -363,7 +367,7 @@ module Ganeti
         #   Array of GanetiJob objects
         def jobs_get
             url = get_url("jobs")
-            response_body = JSON.parse(send_request("GET", url))
+            response_body = send_request("GET", url)
         
             create_class("GanetiJob")
 
@@ -423,7 +427,7 @@ module Ganeti
         # Note that in the above list, by entity we refer to a node or instance, while by a resource we refer to an instance’s disk, or NIC, etc.
         def job_get(job_id)
             url = get_url("jobs/#{job_id}")
-            response_body = JSON.parse(send_request("GET", url))
+            response_body = send_request("GET", url)
 
             create_class("GanetiJob")
 
@@ -451,7 +455,7 @@ module Ganeti
         # Returns detailed information about nodes as a list.
         def nodes_get(bulk = 0)
             url = get_url("nodes", {"bulk", bulk})
-            response_body = JSON.parse(send_request("GET", url))
+            response_body = send_request("GET", url)
 
             create_class("GanetiNode")
 
@@ -464,7 +468,7 @@ module Ganeti
         # Returns information about a node
         def node_get(name)
             url = get_url("nodes/#{name}")
-            response_body = JSON.parse(send_request("GET", url))
+            response_body = send_request("GET", url)
 
             create_class("GanetiNode")
 
@@ -492,6 +496,9 @@ module Ganeti
         # 
         # Example:
         #   migrate?live=[0|1]
+        #
+        # Return:
+        #   job id
         def node_migrate(name, live = 0)
             url = get_url("nodes/#{name}/migrate", {"live" => live})
             response_body = send_request("POST", url)
@@ -529,8 +536,8 @@ module Ganeti
         #   offline
         #   regular
         def node_change_role(name, role, force = 0)
-            url = get_url("nodes/#{name}/role", {"role" => role, "force" => foce})
-            response_body = send_request("PUT", url)
+            url = get_url("nodes/#{name}/role", {"role" => role, "force" => force})
+            response_body = send_request("PUT", url, body)
 
             return response_body
         end
@@ -561,8 +568,8 @@ module Ganeti
         #
         # The result will be a job id
         def node_repair_storage(name, storage_type = "lvm-vg")
-            url = get_url("nodes/#{name}/storage/repair", {"storage_type" => storage_type})
-            reponse_body = send_request("PUT", url)
+            url = get_url("nodes/#{name}/storage/repair",{"storage_type" => storage_type})
+            response_body = send_request("PUT", url)
 
             return response_body
         end
@@ -581,7 +588,7 @@ module Ganeti
         #   array of tags
         def node_get_tags(name)
             url = get_url("nodes/#{name}/tags")
-            response_body = JSON.parse(send_request("GET", url))
+            response_body = send_request("GET", url)
 
             return response_body
         end
@@ -633,7 +640,7 @@ module Ganeti
         #   ["debian-etch"]
         def os_list_get
             url = get_url("os")
-            response_body = JSON.parse(send_request("GET", url))
+            response_body = send_request("GET", url)
 
             return response_body
         end
@@ -648,7 +655,7 @@ module Ganeti
         #   Array of tags
         def tags_get
             url = get_url("tags")
-            response_body = JSON.parse(send_request("GET", url))
+            response_body = send_request("GET", url)
 
             return response_body
         end
@@ -743,7 +750,11 @@ module Ganeti
 
             puts "Response #{response.code} #{response.message}: #{response.body}" if self.show_response
 
-            return response.body.strip
+            # adding workaround becouse Google seems to operate on 'non-strict' JSON format
+            # http://code.google.com/p/ganeti/issues/detail?id=117
+            response_body = '['+response.body.strip+']'
+
+            return JSON.parse(response_body).first
         end
 
         def create_class(class_name)

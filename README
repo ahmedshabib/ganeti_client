@@ -1,13 +1,9 @@
 == Todo
 
     1. Manually test the following methods + fix when bugs found
-        1.1.    redistribute_config
         1.3.    instance_delete
-        1.7.    instance_reinstall
         1.8.    instance_replace_disks
         1.9.    instance_activate_disks
-        1.13.   job_delete
-        1.15.   node_migrate
         1.16.   node_change_role
         1.17.   node_get_storage
         1.18.   node_modify_storage
