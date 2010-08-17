@@ -335,9 +335,8 @@ module Ganeti
         # Return:
         #   job id
         def instance_create_tags(name, tags, dry_run = 0)
-            url = get_url("instances/#{name}/tags")
-            body = JSON.generate({'tag' => 'tag1', 'tag' => 'tag2', 'dry-run' => dry_run})
-            response_body = send_request("PUT", url, body)
+            url = get_url("instances/#{name}/tags", {'dry-run' => dry_run, 'tag' => tags})
+            response_body = send_request("PUT", url)
 
             return response_body
         end
@@ -350,9 +349,9 @@ module Ganeti
         #   dry_run: 0|1 (optional)
         #
         # Return:
-        #   ?
+        #   job id
         def instance_delete_tags(name, tags, dry_run = 0)
-            url = get_url("instances/#{name}/tags", {"tags" => tags, "dry-run" => dry_run})
+            url = get_url("instances/#{name}/tags",  {'dry-run' => dry_run, 'tag' => tags})
             response_body = send_request("DELETE", url)
 
             return response_body
@@ -575,11 +574,14 @@ module Ganeti
         # Example:
         #   ["tag1","tag2", "tag3"]
         #
+        # Parameters:
+        #   name: name of node
+        # 
         # Return:
         #   array of tags
         def node_get_tags(name)
             url = get_url("nodes/#{name}/tags")
-            response_body = send_request("GET", url)
+            response_body = JSON.parse(send_request("GET", url))
 
             return response_body
         end
@@ -589,8 +591,15 @@ module Ganeti
         # It supports the dry-run argument
         #
         # The result will be a job id
+        #
+        # Parameters:
+        #   name: node name
+        #   tags: Array of tags
+        #
+        # Return:
+        #   job id
         def node_create_tags(name, tags, dry_run = 0)
-            url = get_url("nodes/#{name}/tags", {"tags" => tags, "dry-run" => dry_run})
+            url = get_url("nodes/#{name}/tags", {"tag" => tags, "dry-run" => dry_run})
             response_body = send_request("PUT", url)
 
             return response_body
@@ -601,8 +610,15 @@ module Ganeti
         #   /tags?tag=[tag]&tag=[tag]
         #
         # It supports the dry-run argument
+        #
+        # Parameters:
+        #   name: node name
+        #   tags: Array of tags
+        #
+        # Return:
+        #   job id
         def node_delete_tags(name, tags, dry_run = 0)
-            url = get_url("nodes/#{name}/tags", {"tags" => targs, "dry-run" => dry_run})
+            url = get_url("nodes/#{name}/tags", {"tag" => tags, "dry-run" => dry_run})
             response_body = send_request("DELETE", url)
 
             return response_body
@@ -627,6 +643,9 @@ module Ganeti
         #
         # Example:
         #   ["tag1", "tag2", "tag3"]
+        #
+        # Return:
+        #   Array of tags
         def tags_get
             url = get_url("tags")
             response_body = JSON.parse(send_request("GET", url))
@@ -638,8 +657,14 @@ module Ganeti
         # The request as a list of strings should be PUT to this URI. The result will be a job id
         #
         # It supports the dry-run argument
+        # 
+        # Parameters
+        #   tags: Array of tags
+        #
+        # Return:
+        #   job id
         def tags_create(tags, dry_run = 0)
-            url = get_url("tags", {"tags" => tags, "dry-run" => dry_run})
+            url = get_url("tags", {"tag" => tags, "dry-run" => dry_run})
             response_body = send_request("PUT", url)
 
             return response_body
@@ -650,8 +675,14 @@ module Ganeti
         #   /tags?tag=[tag]&tag=[tag]
         #
         # It supports the dry-run argument
+        #
+        # Parameters:
+        #   tags: Array of tags
+        #
+        # Return:
+        #   job id
         def tags_delete(tags, dry_run = 0)
-            url = get_url("tags", {"tags" => tags, "dry-run" => dry_run})
+            url = get_url("tags", {"tag" => tags, "dry-run" => dry_run})
             response_body = send_request("DELETE", url)
 
             return response_body

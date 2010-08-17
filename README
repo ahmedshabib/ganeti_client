@@ -6,19 +6,12 @@
         1.7.    instance_reinstall
         1.8.    instance_replace_disks
         1.9.    instance_activate_disks
-        1.10.   instance_create_tags
-        1.11.   instance_delete_tags
         1.13.   job_delete
         1.15.   node_migrate
         1.16.   node_change_role
         1.17.   node_get_storage
         1.18.   node_modify_storage
         1.19.   node_repair_storage
-        1.20.   node_get_tags
-        1.21.   node_create_tags
-        1.22.   node_delete_tags
-        1.22.   tags_create
-        1.23.   tags_delete
     2. Add some error handling
     3. Make some code improvements
     4. Add better comments
