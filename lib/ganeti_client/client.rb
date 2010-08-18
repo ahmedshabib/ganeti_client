@@ -167,7 +167,7 @@ module Ganeti
         #   dry_run: 0|1 (optional)
         #
         # Return:
-        #   ?
+        #   job id
         def instance_delete(name, dry_run = 0)
             url = get_url("instances/#{name}", {"dry-run" => dry_run})
             response_body = send_request("DELETE", url)
@@ -277,7 +277,7 @@ module Ganeti
         #   disks: comma seperated list of disk indexes
         #
         # Return:
-        #   ?
+        #   job id
         def instance_replace_disks(name, mode = "replace_auto", iallocator  = "", remote_node = "", disks = "")
             url = get_url("instances/#{name}/replace-disks", {"mode" => mode, "iallocator" => iallocator, "remote_node" => remote_node, "disks" => disks})
             response_body = send_request("POST", url)
@@ -293,8 +293,8 @@ module Ganeti
         #   ignore_size: 0|1 (optional)
         #
         # Return:
-        #   ?
-        def intance_activate_disks(name, ignore_size = 0)
+        #   job id
+        def instance_activate_disks(name, ignore_size = 0)
             url = get_url("instances/#{name}/activate-disks", {"ignore_size" => ignore_size})
             response_body = send_request("PUT", url)
 
@@ -307,7 +307,7 @@ module Ganeti
         #   name: name of the instance
         #
         # Return:
-        #   ?
+        #   job id
         def instance_deactivate_disks(name)
             url = get_url("instances/#{name}/deactivate-disks")
             response_body = send_request("PUT", url)
@@ -536,8 +536,8 @@ module Ganeti
         #   offline
         #   regular
         def node_change_role(name, role, force = 0)
-            url = get_url("nodes/#{name}/role", {"role" => role, "force" => force})
-            response_body = send_request("PUT", url, body)
+            url = get_url("nodes/#{name}/role", {role => 1, "force" => force})
+            response_body = send_request("PUT", url)
 
             return response_body
         end
@@ -567,8 +567,11 @@ module Ganeti
         # Repairs a storage unit on the node. Requires the parameters storage_type (currently only lvm-vg can be repaired) and name (name of the storage unit).
         #
         # The result will be a job id
-        def node_repair_storage(name, storage_type = "lvm-vg")
-            url = get_url("nodes/#{name}/storage/repair",{"storage_type" => storage_type})
+        #
+        # Return
+        #   job id
+        def node_repair_storage(name, storage_name, storage_type = "lvm-vg")
+            url = get_url("nodes/#{name}/storage/repair",{"storage_type" => storage_type, "name" => storage_name})
             response_body = send_request("PUT", url)
 
             return response_body
