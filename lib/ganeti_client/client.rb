@@ -536,14 +536,17 @@ module Ganeti
         #   offline
         #   regular
         def node_change_role(name, role, force = 0)
-            url = get_url("nodes/#{name}/role", {role => 1, "force" => force})
-            response_body = send_request("PUT", url)
+            url = get_url("nodes/#{name}/role", {"role" => role, "force" => force})
+            response_body = send_request("PUT", url, body)
 
             return response_body
         end
 
         # Manages storage units on the node
-        # Requests a list of storage units on a node. Requires the parameters storage_type (one of file, lvm-pv or lvm-vg) and output_fields. The result will be a job id, using which the result can be retrieved
+        # Requests a list of storage units on a node. Requires the parameters storage_type (one of file, lvm-pv or lvm-vg) and output_fields. 
+        # The result will be a job id, using which the result can be retrieved
+        #
+        # Return job id
         def node_get_storage(name, storage_type = "", output_fields = "")
             url = get_url("nodes/#{name}/storage", {"storage_type" => storage_type, "output_fields" => output_fields})
             response_body = send_request("GET", url)
@@ -556,8 +559,8 @@ module Ganeti
         # Parameters can be passed additionally. Currently only allocatable (bool) is supported. 
         #
         # The result will be a job id.
-        def node_modify_storage(name, storage_type, allocatable = 0)
-            url = get_url("nodes/#{name}/storage/modify", {"storage_type" => storage_type, "allocatable" => allocatable})
+        def node_modify_storage(name, storage_unit_name, storage_type, allocatable = 0)
+            url = get_url("nodes/#{name}/storage/modify", {"name" => storage_unit_name, "storage_type" => storage_type, "allocatable" => allocatable})
             response_body = send_request("PUT", url)
 
             return response_body
@@ -746,7 +749,7 @@ module Ganeti
             http.use_ssl = (uri.scheme == "http")? false : true
 
             headers = {}
-            headers = authenticate(self.username, self.password) if method != 'GET'
+            headers = authenticate(self.username, self.password) 
 
             response = http.send_request(method, url, body, headers)
 

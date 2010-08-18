@@ -2,8 +2,6 @@
 
     1. Manually test the following methods + fix when bugs found
         1.16.   node_change_role
-        1.17.   node_get_storage
-        1.18.   node_modify_storage
     2. Add some error handling
     3. Make some code improvements
     4. Add better comments
