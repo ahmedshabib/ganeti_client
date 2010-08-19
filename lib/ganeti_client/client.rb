@@ -34,13 +34,14 @@ module Ganeti
 
         attr_accessor :host, :username, :password, :version, :show_response
 
-        # Create the client object
+        # Description:
+        #   Create the client object
         # 
         # Parameters:
-        #   host: hostname and port
-        #   username: username that has access to RAPI
-        #   password: password of the user provided
-        #   show_response: show response data (optional) 
+        #   string  host: hostname and port
+        #   string  username: username that has access to RAPI
+        #   string  password: password of the user provided
+        #   boolean show_response: show response data (optional) 
         def initialize(host, username, password, show_response = false)
             self.host = host
             self.username = username
@@ -52,7 +53,8 @@ module Ganeti
         end
 
 
-        # Get the cluster information
+        # Description:
+        #   Get the cluster information
         #
         # Return:
         #   GanetiInfo object
@@ -65,10 +67,11 @@ module Ganeti
             return GanetiInfo.new(response_body)
         end
 
-        # Redistrite configuration to all nodes
+        # Description:
+        #   Redistrite configuration to all nodes
         # 
         # Return:
-        #   job id.
+        #   job id
         def redistribute_config
             url = get_url("redistribute-config")
             response_body = send_request("PUT", url)
@@ -76,10 +79,11 @@ module Ganeti
             return response_body
         end
 
-        # Get all instances on the cluster
+        # Description:
+        #   Get all instances on the cluster
         #
         # Parameters:
-        #   bulk: 0|1 (optional)
+        #   boolean bulk (optional)
         #
         # Return:
         #   Array of all available instances. The array items contain a GanetiInstance object
@@ -95,16 +99,17 @@ module Ganeti
             return list
         end
 
-        # Create an instance
-        # If the options bool dry-run argument is provided, the job will not be actually executed, only the pre-execution checks will be done. 
-        # Query-ing the job result will return, in boty dry-run and normal case, the list of nodes selected for the instance
+        # Description:
+        #   Create an instance
+        #   If the options bool dry-run argument is provided, the job will not be actually executed, only the pre-execution checks will be done. 
+        #   Query-ing the job result will return, in boty dry-run and normal case, the list of nodes selected for the instance
         #
-        # Make sure the instance_name resolves!!
+        #   Make sure the instance_name resolves!!
         #
-        # Build parameters dict, optional parameters need to be
-        # excluded to not cause issues with rapi.
+        #   Build parameters dict, optional parameters need to be
+        #   excluded to not cause issues with rapi.
         #  
-        # Example:
+        #   Example:
         #      info = {
         #              'hypervisor'    => 'kvm'    ,               'disk_template' => 'plain',
         #              'pnode'         => 'node.netronix.be',      'instance_name' => 'vm1.netronix.be',   'os'    => 'debootstrap+lucid',
@@ -114,8 +119,8 @@ module Ganeti
         #             }
         #
         # Parameters:
-        #   info: hash of data needed for the instance creation
-        #   dry_run: 0|1 (optional)
+        #   hash    info: hash of data needed for the instance creation (see above)
+        #   boolean dry_run (optional)
         #
         # Return:
         #   job_id
@@ -144,10 +149,11 @@ module Ganeti
             return response_body
         end
 
-        # Get instance specific information, similar to the bulk output from the instance list
+        # Description:
+        #   Get instance specific information, similar to the bulk output from the instance list
         #
         # Parameters:
-        #   name: name of the instance
+        #   string name: name of the instance
         #
         # Return
         #   GanetiInstance object
@@ -160,11 +166,12 @@ module Ganeti
             return GanetiInstance.new(response_body)
         end
 
-        # Delete a specific instance
+        # Description:
+        #   Delete a specific instance
         # 
         # Parameters:
-        #   name: name of the instance
-        #   dry_run: 0|1 (optional)
+        #   string  name: name of the instance
+        #   boolean dry_run (optional)
         #
         # Return:
         #   job id
@@ -175,11 +182,13 @@ module Ganeti
             return response_body 
         end
 
-        # Get detailed information about an instance. Static parameter can be set to return only static information from the configuration without querying the instance's nodes
+        # Description:
+        #   Get detailed information about an instance. Static parameter can be set to return only static information 
+        #   from the configuration without querying the instance's nodes
         #
         # Parameters:
-        #   name: name of the instance
-        #   static: 0|1 (optional)
+        #   string      name: name of the instance
+        #   boolean:    static (optional)
         #
         # Return:
         #   job id
@@ -190,21 +199,21 @@ module Ganeti
             return response_body
         end
 
-        # Reboot a specific instance
-        # The URI takes optional type=soft|hard|full and ignore_secondaries=0|1 parameters
+        # Description:
+        #   Reboot a specific instance
+        #   The URI takes optional type=soft|hard|full and ignore_secondaries=0|1 parameters
         # 
-        # type defines the reboot type. 
-        #   soft is just a normal reboot, without terminating the hypervisor. 
-        #   hard means full shutdown (including terminating the hypervisor process) and startup again
-        #   full is like hard but also recreates the configuration from ground up as if you would have don a gnt-instance shutdown and gnt-instance start on it
+        #   type defines the reboot type. 
+        #       soft is just a normal reboot, without terminating the hypervisor. 
+        #       hard means full shutdown (including terminating the hypervisor process) and startup again
+        #       full is like hard but also recreates the configuration from ground up as if you would have don a gnt-instance shutdown and gnt-instance start on it
         #
-        # it supports the dry-run argument
         #
         # Parameters:
-        #   name: name of the instance
-        #   type: soft|hard|full (optional)
-        #   ignore_secondaries: 0|1 (optional)
-        #   dry_run: 0|1 (optional)
+        #   string  name: name of the instance
+        #   string  type: soft|hard|full (optional)
+        #   boolean ignore_secondaries (optional)
+        #   boolean dry_run (optional)
         #
         # Return:
         #   job id
@@ -216,11 +225,12 @@ module Ganeti
         end
 
 
-        # Shutdown an instance
+        # Description:
+        #   Shutdown an instance
         # 
         # Parameters:
-        #   name: name of the instance
-        #   dry_run: 0|1 (optional)
+        #   string  name: name of the instance
+        #   boolean dry_run (optional)
         #
         # Return:
         #   job id
@@ -231,13 +241,14 @@ module Ganeti
             return response_body
         end      
 
-        # Startup an instance
-        # The URI takes an optional force=1|0 parameter to start the instance even if secondary disks are failing
+        # Description:
+        #   Startup an instance
+        #   The URI takes an optional force=1|0 parameter to start the instance even if secondary disks are failing
         #
         # Parameters:
-        #   name: name of the instance
-        #   force: 0|1 (optional)
-        #   dry_run: 0|1 (optional)
+        #   string  name: name of the instance
+        #   boolean force (optional)
+        #   boolean dry_run (optional)
         #
         # Return:
         #   job id
@@ -248,12 +259,13 @@ module Ganeti
             return response_body
         end
 
-        # Install the operating system again
+        # Description:
+        #   Install the operating system again
         # 
         # Parameters:
-        #   name: name of the instance
-        #   os_name: name of the os
-        #   nostartup: 0|1 (optional)
+        #   string  name: name of the instance
+        #   string  os_name: name of the os
+        #   boolean nostartup (optional)
         #
         # Return:
         #   job id
@@ -264,17 +276,18 @@ module Ganeti
             return response_body
         end
 
-        # Replaces disks on an instance
-        # Takes the parameters mode (one of replace_on_primary, replace_on_secondary or replace_auto), disks (comma seperated list of disk indexes), remote_node and iallocator
-        # Either remote_node or iallocator needs to be defined when using mode=replace_new_secondary
-        # mode is a mandatory parameter. replace_auto tries to determine the broken disk(s) on its own and replacing it
+        # Description:
+        #   Replaces disks on an instance
+        #   Takes the parameters mode (one of replace_on_primary, replace_on_secondary or replace_auto), disks (comma seperated list of disk indexes), remote_node and iallocator
+        #   Either remote_node or iallocator needs to be defined when using mode=replace_new_secondary
+        #   mode is a mandatory parameter. replace_auto tries to determine the broken disk(s) on its own and replacing it
         #
         # Parameters:
-        #   name: name of the instance
-        #   mode replace_on_primary|replace_on_secondary|replace_auto (optional)
-        #   ialllocator:
-        #   remote_node:
-        #   disks: comma seperated list of disk indexes
+        #   string  name: name of the instance
+        #   string  mode replace_on_primary|replace_on_secondary|replace_auto (optional)
+        #   string  ialllocator:
+        #   string  remote_node:
+        #   string  disks: comma seperated list of disk indexes
         #
         # Return:
         #   job id
@@ -285,12 +298,13 @@ module Ganeti
             return response_body
         end
 
-        # Activate disks on an instance
-        # Takes the bool parameter ignore_size. When set ignore the recorded size (useful for forcing activation when recoreded size is wrong)
+        # Description:
+        #   Activate disks on an instance
+        #   Takes the bool parameter ignore_size. When set ignore the recorded size (useful for forcing activation when recoreded size is wrong)
         #
         # Parameters:
-        #   name: name of the instance
-        #   ignore_size: 0|1 (optional)
+        #   string  name: name of the instance
+        #   boolean ignore_size (optional)
         #
         # Return:
         #   job id
@@ -301,10 +315,11 @@ module Ganeti
             return response_body
         end
 
-        # Deactivate disks on an instance
+        # Description:
+        #   Deactivate disks on an instance
         # 
         # Parameters:
-        #   name: name of the instance
+        #   string name: name of the instance
         #
         # Return:
         #   job id
@@ -315,10 +330,12 @@ module Ganeti
             return response_body
         end
 
-        # Returns a list of tags
+        # Description:
+        #   Returns a list of tags
+        #
         #
         # Parameters:
-        #   name: name of the instance
+        #   string name: name of the instance
         #
         # Return:
         #   Array of tags
@@ -329,12 +346,13 @@ module Ganeti
             return response_body
         end
        
-        # Add a set of tags
+        # Description:
+        #   Add a set of tags
         #
         # Parameters:
-        #   name: name of the instance
-        #   tags: Array of tags
-        #   dry_run: 0|1 (optional)
+        #   string  name: name of the instance
+        #   array   tags: Array of tags, tags are strings
+        #   boolean dry_run (optional)
         #
         # Return:
         #   job id
@@ -345,12 +363,13 @@ module Ganeti
             return response_body
         end
 
-        # Delete (a) tag(s) on an instance
+        # Description:
+        #   Delete (a) tag(s) on an instance
         # 
         # Parameters:
-        #   name: name of the instance
-        #   tags: Array of tags
-        #   dry_run: 0|1 (optional)
+        #   string  name: name of the instance
+        #   array   tags: Array of tags, tags are strings
+        #   boolean dry_run (optional)
         #
         # Return:
         #   job id
@@ -361,7 +380,8 @@ module Ganeti
             return response_body
         end
 
-        # Returns a dictionary of jobs
+        # Description:
+        #   Returns a dictionary of jobs
         # 
         # Return:
         #   Array of GanetiJob objects
@@ -377,54 +397,61 @@ module Ganeti
             return list
         end      
 
-        # Individual job URI
-        # Return a job status
-        # Returns: a dictionary with job parameters
+        # Description:
+        #   Individual job URI
+        #   Return a job status
+        #   Returns: a dictionary with job parameters
         #
-        # The result includes:
-        #   id: job ID as number
-        #   status: current job status as a string
-        #   ops: involved OpCodes as a list of dictionaries for each opcodes in the job
-        #   opstatus: OpCodes status as a list
-        #   opresult: OpCodes results as a list
+        #   The result includes:
+        #       id: job ID as number
+        #       status: current job status as a string
+        #       ops: involved OpCodes as a list of dictionaries for each opcodes in the job
+        #       opstatus: OpCodes status as a list
+        #       opresult: OpCodes results as a list
         #
-        # For a successful opcode, the opresult field corresponding to it will contain the raw result from its LogicalUnit. In case an opcode has failed, its element in the opresult list will be a list of two elements:
-        #   first element the error type (the Ganeti internal error name)
-        #   second element a list of either one or two elements:
-        #   the first element is the textual error description
-        #   the second element, if any, will hold an error classification
+        #   For a successful opcode, the opresult field corresponding to it will contain the raw result from its LogicalUnit. In case an opcode has failed, its element in the opresult list will be a list of two elements:
+        #       first element the error type (the Ganeti internal error name)
+        #       second element a list of either one or two elements:
+        #       the first element is the textual error description
+        #       the second element, if any, will hold an error classification
         # 
-        # The error classification is most useful for the OpPrereqError error type - these errors happen before the OpCode has started executing, so it’s possible to retry the 
-        # OpCode without side effects. But whether it make sense to retry depends on the error classification:
+        #   The error classification is most useful for the OpPrereqError error type - these errors happen before the OpCode has started executing, so it’s possible to retry the 
+        #   OpCode without side effects. But whether it make sense to retry depends on the error classification:
         # 
-        #   resolver_error
-        #       Resolver errors. This usually means that a name doesn’t exist in DNS, so if it’s a case of slow DNS propagation the operation can be retried later.
+        #       resolver_error
+        #           Resolver errors. This usually means that a name doesn’t exist in DNS, so if it’s a case of slow DNS propagation the operation can be retried later.
         #
-        #   insufficient_resources
-        #       Not enough resources (iallocator failure, disk space, memory, etc.). If the resources on the cluster increase, the operation might succeed.
+        #       insufficient_resources
+        #           Not enough resources (iallocator failure, disk space, memory, etc.). If the resources on the cluster increase, the operation might succeed.
         #
-        #   wrong_input
-        #       Wrong arguments (at syntax level). The operation will not ever be accepted unless the arguments change.
+        #       wrong_input
+        #           Wrong arguments (at syntax level). The operation will not ever be accepted unless the arguments change.
         #
-        #   wrong_state
-        #       Wrong entity state. For example, live migration has been requested for a down instance, or instance creation on an offline node. The operation can be retried once the resource has changed state.
+        #       wrong_state
+        #           Wrong entity state. For example, live migration has been requested for a down instance, or instance creation on an offline node. The operation can be retried once the resource has changed state.
         #   
-        #   unknown_entity
-        #       Entity not found. For example, information has been requested for an unknown instance.
+        #       unknown_entity
+        #           Entity not found. For example, information has been requested for an unknown instance.
         #
-        #   already_exists
-        #       Entity already exists. For example, instance creation has been requested for an already-existing instance.
+        #       already_exists
+        #           Entity already exists. For example, instance creation has been requested for an already-existing instance.
         #
-        #   resource_not_unique
-        #       Resource not unique (e.g. MAC or IP duplication).
+        #       resource_not_unique
+        #           Resource not unique (e.g. MAC or IP duplication).
         #    
-        #   internal_error
-        #       Internal cluster error. For example, a node is unreachable but not set offline, or the ganeti node daemons are not working, etc. A gnt-cluster verify should be run.
+        #       internal_error
+        #           Internal cluster error. For example, a node is unreachable but not set offline, or the ganeti node daemons are not working, etc. A gnt-cluster verify should be run.
         #    
-        #   environment_error
-        #       Environment error (e.g. node disk error). A gnt-cluster verify should be run.
+        #       environment_error
+        #           Environment error (e.g. node disk error). A gnt-cluster verify should be run.
         #
-        # Note that in the above list, by entity we refer to a node or instance, while by a resource we refer to an instance’s disk, or NIC, etc.
+        #   Note that in the above list, by entity we refer to a node or instance, while by a resource we refer to an instance’s disk, or NIC, etc.
+        #
+        # Parameters:
+        #   string job_id
+        #
+        # Return:
+        #   GanetiJob object
         def job_get(job_id)
             url = get_url("jobs/#{job_id}")
             response_body = send_request("GET", url)
@@ -434,13 +461,14 @@ module Ganeti
             return GanetiJob.new(response_body)
         end
 
-        # Cancel a not-yet-started job
+        # Description:
+        #   Cancel a not-yet-started job
         #
         # Parameters:
-        #   job_id: id of a job
+        #   string job_id: id of a job
         #
         # Return:
-        #   ?
+        #   job id
         def job_delete(job_id)
             url = get_url("jobs/#{job_id}")
             response_body = send_request("DELETE", url)
@@ -448,11 +476,15 @@ module Ganeti
             return response_body
         end
 
-        # Nodes resource
-        # Returns a list of all nodes
-        # If the optional ‘bulk’ argument is provided and set to ‘true’ value (i.e ‘?bulk=1’).
+        # Description:
+        #   Nodes resource
+        #   Returns a list of all nodes
         #
-        # Returns detailed information about nodes as a list.
+        # Parameters:
+        #   boolean: bulk (optional)
+        #
+        # Return:
+        #   Array of GanetiNode objects
         def nodes_get(bulk = 0)
             url = get_url("nodes", {"bulk", bulk})
             response_body = send_request("GET", url)
@@ -465,7 +497,14 @@ module Ganeti
             return list 
         end
 
-        # Returns information about a node
+        # Description:
+        #   Returns information about a node
+        #
+        # Parameters:
+        #   string name: name of the node
+        #
+        # Return:
+        #   GanetiNode object
         def node_get(name)
             url = get_url("nodes/#{name}")
             response_body = send_request("GET", url)
@@ -475,12 +514,14 @@ module Ganeti
             return GanetiNode.new(response_body)
         end
 
-        # Evacuates all secondary instances off a node.
-        # To evacuate a node, either one of the iallocator or remote_node parameters must be passed:
+        # Description:
+        #   Evacuates all secondary instances off a node.
+        #   To evacuate a node, either one of the iallocator or remote_node parameters must be passed:
         #
-        # Example:
-        #   evacuate?iallocator=[iallocator]
-        #   evacuate?remote_node=[nodeX.example.com]
+        # Parameters:
+        #   string name: name of the node
+        #   string iallocator:
+        #   string remote_node:
         #
         # Return:
         #   job id
@@ -491,11 +532,13 @@ module Ganeti
            return response_body
         end
 
-        # Migrates all primary instances of a node
-        # No parameters are required, but the bool parameter live can be set to use live migration (if available)
+        # Description:
+        #   Migrates all primary instances of a node
+        #   No parameters are required, but the bool parameter live can be set to use live migration (if available)
         # 
-        # Example:
-        #   migrate?live=[0|1]
+        # Parameters:
+        #   string  name: name of the node
+        #   boolean live (optional)
         #
         # Return:
         #   job id
@@ -506,18 +549,23 @@ module Ganeti
             return response_body
         end
 
-        # Get the node role
-        # Returns the current node role
+        # Description:
+        #   Get the node role
+        #   Returns the current node role
         #
-        # Example:
-        #   "master-candidate"
         #
-        # The rol is always one of the following:
-        #   drained
-        #   master
-        #   master-candidate
-        #   offline
-        #   regular
+        #   The rol is always one of the following:
+        #       drained
+        #       master
+        #       master-candidate
+        #       offline
+        #       regular
+        #
+        # Parameters:
+        #   string name: name of the node
+        #
+        # Return:
+        #   node role as string
         def node_get_role(name)
             url = get_url("nodes/#{name}/role")
             response_body = send_request("GET", url)
@@ -525,28 +573,44 @@ module Ganeti
             return response_body
         end
 
-        # Change the node role
-        # the request is a string which shoud be PUT to this URI. The result will be a job id
-        # It supports the bool force argument
+        # Description:
+        #   Change the node role
+        #   the request is a string which shoud be PUT to this URI. The result will be a job id
         #
-        # The rol is always one of the following:
-        #   drained
-        #   master
-        #   master-candidate
-        #   offline
-        #   regular
+        #   The rol is always one of the following:
+        #       drained
+        #       master
+        #       master-candidate
+        #       offline
+        #       regular
+        #
+        # Parameters:
+        #   string  name: name of the node
+        #   string  role: name of the new role
+        #   boolean force (optional)
+        #
+        # Return:
+        #   job id
         def node_change_role(name, role, force = 0)
             url = get_url("nodes/#{name}/role", {"role" => role, "force" => force})
+            body = "#{role}"
             response_body = send_request("PUT", url, body)
 
             return response_body
         end
 
-        # Manages storage units on the node
-        # Requests a list of storage units on a node. Requires the parameters storage_type (one of file, lvm-pv or lvm-vg) and output_fields. 
-        # The result will be a job id, using which the result can be retrieved
+        # Description:
+        #   Manages storage units on the node
+        #   Requests a list of storage units on a node. Requires the parameters storage_type (one of file, lvm-pv or lvm-vg) and output_fields. 
+        #   The result will be a job id, using which the result can be retrieved
         #
-        # Return job id
+        # Parameters:
+        #   string name: name of the node
+        #   string storage_type: name of the storage type
+        #   string output_fields: fields it needs to return back
+        # 
+        # Return:
+        #   job id
         def node_get_storage(name, storage_type = "", output_fields = "")
             url = get_url("nodes/#{name}/storage", {"storage_type" => storage_type, "output_fields" => output_fields})
             response_body = send_request("GET", url)
@@ -554,11 +618,17 @@ module Ganeti
             return response_body
         end
 
-        # Modify storage units on the node
-        # Mofifies parameters of storage units on the node. Requires the parameters storage_type (one of file, lvm-pv or lvm-vg) and name (name of the storage unit). 
-        # Parameters can be passed additionally. Currently only allocatable (bool) is supported. 
+        # Description:
+        #   Modify storage units on the node
+        #   Mofifies parameters of storage units on the node. Requires the parameters storage_type (one of file, lvm-pv or lvm-vg) and name (name of the storage unit). 
+        #   Parameters can be passed additionally. Currently only allocatable (bool) is supported. 
         #
-        # The result will be a job id.
+        # Parameters:
+        #   string  name: name of the node
+        #   string  storage_unit_name: name of the storage unit
+        #   boolean allocatable (optional)
+        # Return:
+        #   job id
         def node_modify_storage(name, storage_unit_name, storage_type, allocatable = 0)
             url = get_url("nodes/#{name}/storage/modify", {"name" => storage_unit_name, "storage_type" => storage_type, "allocatable" => allocatable})
             response_body = send_request("PUT", url)
@@ -567,11 +637,15 @@ module Ganeti
         end
 
 
-        # Repairs a storage unit on the node. Requires the parameters storage_type (currently only lvm-vg can be repaired) and name (name of the storage unit).
+        # Description:
+        #   Repairs a storage unit on the node. Requires the parameters storage_type (currently only lvm-vg can be repaired) and name (name of the storage unit).
         #
-        # The result will be a job id
+        # Parameters:
+        #   string name: name of the node
+        #   string storage_name: name of the storage
+        #   string storage_type: name of the storage type
         #
-        # Return
+        # Return:
         #   job id
         def node_repair_storage(name, storage_name, storage_type = "lvm-vg")
             url = get_url("nodes/#{name}/storage/repair",{"storage_type" => storage_type, "name" => storage_name})
@@ -581,17 +655,16 @@ module Ganeti
         end
 
 
-        # Manages per-node tags
-        # Returns a list of tags
+        # Description:
+        #   Manages per-node tags
+        #   Returns a list of tags
         #
-        # Example:
-        #   ["tag1","tag2", "tag3"]
         #
         # Parameters:
-        #   name: name of node
+        #   string name: name of node
         # 
         # Return:
-        #   array of tags
+        #   array of tags, the tags are string
         def node_get_tags(name)
             url = get_url("nodes/#{name}/tags")
             response_body = send_request("GET", url)
@@ -599,15 +672,15 @@ module Ganeti
             return response_body
         end
 
-        # Add a set of tags
-        # The request as a list of strings should be PUT to this URI.
-        # It supports the dry-run argument
+        # Description:
+        #   Add a set of tags
+        #   The request as a list of strings should be PUT to this URI.
         #
-        # The result will be a job id
         #
         # Parameters:
-        #   name: node name
-        #   tags: Array of tags
+        #   string  name: node name
+        #   array   tags: Array of tags, tags are strings
+        #   boolean dry_run (optional)
         #
         # Return:
         #   job id
@@ -618,15 +691,15 @@ module Ganeti
             return response_body
         end
 
-        # Deletes tags
-        # In order to delete a set of tags, the DELETE request should be addressed to URI like:
-        #   /tags?tag=[tag]&tag=[tag]
+        # Description:
+        #   Deletes tags
+        #   In order to delete a set of tags, the DELETE request should be addressed to URI like:
+        #       /tags?tag=[tag]&tag=[tag]
         #
-        # It supports the dry-run argument
         #
         # Parameters:
-        #   name: node name
-        #   tags: Array of tags
+        #   string name: node name
+        #   array  tags: Array of tags, tags are strings
         #
         # Return:
         #   job id
@@ -637,13 +710,15 @@ module Ganeti
             return response_body
         end
 
-        # OS resource
-        # Returns a list of all OSes
-        # 
-        # Can return error 500 in case of a problem. Since this is a costly operation for Ganeti 2.0, it is not recommented to execute it too often
+        # Description:
+        #   Returns a list of all OSes
+        #   Can return error 500 in case of a problem. Since this is a costly operation for Ganeti 2.0, it is not recommented to execute it too often
         #
-        # Example:
-        #   ["debian-etch"]
+        #   Example:
+        #       ["debian-etch"]
+        #
+        # Return:
+        #   array of os's, os is a string
         def os_list_get
             url = get_url("os")
             response_body = send_request("GET", url)
@@ -651,14 +726,15 @@ module Ganeti
             return response_body
         end
 
-        # Manages cluster tags
-        # Returns the cluster tags
+        # Description:
+        #   Manages cluster tags
+        #   Returns the cluster tags
         #
-        # Example:
-        #   ["tag1", "tag2", "tag3"]
+        #   Example:
+        #       ["tag1", "tag2", "tag3"]
         #
         # Return:
-        #   Array of tags
+        #   Array of tags, tags are strings
         def tags_get
             url = get_url("tags")
             response_body = send_request("GET", url)
@@ -666,13 +742,14 @@ module Ganeti
             return response_body
         end
 
-        # Adds a set of tags
-        # The request as a list of strings should be PUT to this URI. The result will be a job id
+        # Description:
+        #   Adds a set of tags
+        #   The request as a list of strings should be PUT to this URI. The result will be a job id
         #
-        # It supports the dry-run argument
         # 
         # Parameters
-        #   tags: Array of tags
+        #   array   tags: Array of tags, tags are strings
+        #   boolean dry_run (optional)
         #
         # Return:
         #   job id
@@ -683,14 +760,15 @@ module Ganeti
             return response_body
         end
 
-        # Deletes tags
-        # In order to delete a set of tags, the DELETE request should be addressed to URI like:
-        #   /tags?tag=[tag]&tag=[tag]
+        # Description:
+        #   Deletes tags
+        #   In order to delete a set of tags, the DELETE request should be addressed to URI like:
+        #       /tags?tag=[tag]&tag=[tag]
         #
-        # It supports the dry-run argument
         #
         # Parameters:
-        #   tags: Array of tags
+        #   array   tags: Array of tags, tags are strings
+        #   boolean dry_run (optional)
         #
         # Return:
         #   job id
@@ -702,9 +780,13 @@ module Ganeti
         end
 
 
-        # The version resource
-        # This resource should be used to determine the remote API version and to adapt client accordingly
-        # Returns the remote API version. Ganeti 1.2 returns 1 and Ganeti 2.0 returns 2
+        # Description:
+        #   The version resource
+        #   This resource should be used to determine the remote API version and to adapt client accordingly
+        #   Returns the remote API version. Ganeti 1.2 returns 1 and Ganeti 2.0 returns 2
+        #
+        # Return:
+        #   version number
         def version_get
             url = get_url("version")
             response_body = send_request("GET", url)
@@ -715,6 +797,15 @@ module Ganeti
 
         private
 
+        # Description:
+        #   Create the authentication headers, base64 encoded for basic auth
+        #
+        # Parameters:
+        #   string username
+        #   string password
+        #
+        # Return:
+        #   hash headers
         def authenticate(username, password)
             basic = Base64.encode64("#{username}:#{password}").strip
             headers = {'Authorization' => "Basic #{basic}"}
@@ -722,6 +813,15 @@ module Ganeti
             return headers         
         end
     
+        # Descriptions:
+        #   Create the url for the resource with extra parameters appended to the end if needed
+        #
+        # Params:
+        #   string  path: path to the resource
+        #   hash    params: extra parameters (optional)
+        #
+        # Return:
+        #   string url 
         def get_url(path, params = nil)
             param_string = ""
 
@@ -742,6 +842,17 @@ module Ganeti
             return url.chop
         end
 
+        # Description:
+        #   Using the net::http library to create an http object that sends a request to the appropriate resource
+        #   The response is catched, parsed and returned
+        #
+        # Parameters:
+        #   string method: action method (get, post, put, delete)
+        #   string url: the path to the resource
+        #   string body: extra body information that needs to be send to the resource
+        #
+        # Return:
+        #   json response: the reponse from the resource
         def send_request(method, url, body = nil)
             uri = URI.parse(host)
 
@@ -763,6 +874,12 @@ module Ganeti
             return JSON.parse(response_body).first
         end
 
+        # Description:
+        #   Create the appropriate Ganeti object if the class type does not exist yet.
+        #   The specific Ganeti object inherits from a master object.
+        #
+        # Parameters:
+        #   string class_name: name of the specific Ganeti object
         def create_class(class_name)
             unless(class_exists?(class_name))
                 klass = Class.new Ganeti::GanetiObject
@@ -770,6 +887,14 @@ module Ganeti
             end
         end
 
+        # Description:
+        #   Check if a specific class exists in the current runtime
+        #
+        # Parameters:
+        #   string class_name: name of the specific Ganeti object
+        #
+        # Return:
+        #   boolean
         def class_exists?(class_name)
             klass = Module.const_get(class_name)
             return klass.is_a?(Class)
