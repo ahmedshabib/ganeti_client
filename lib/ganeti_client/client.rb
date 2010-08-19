@@ -71,7 +71,7 @@ module Ganeti
         #   Redistrite configuration to all nodes
         # 
         # Return:
-        #   job id
+        #   string job id
         def redistribute_config
             url = get_url("redistribute-config")
             response_body = send_request("PUT", url)
@@ -86,7 +86,7 @@ module Ganeti
         #   boolean bulk (optional)
         #
         # Return:
-        #   Array of all available instances. The array items contain a GanetiInstance object
+        #   array of all available instances. The array items contain a GanetiInstance object
         def instances_get(bulk = 0)
             url = get_url("instances", {"bulk" => bulk})
             response_body = send_request("GET", url)
@@ -123,7 +123,7 @@ module Ganeti
         #   boolean dry_run (optional)
         #
         # Return:
-        #   job_id
+        #   string job_id
         def instance_create(info, dry_run = 0)
             params = {
                         'hypervisor'    => info['hypervisor'],  'disk_template' => info['disk_template'],
@@ -174,7 +174,7 @@ module Ganeti
         #   boolean dry_run (optional)
         #
         # Return:
-        #   job id
+        #   string job id
         def instance_delete(name, dry_run = 0)
             url = get_url("instances/#{name}", {"dry-run" => dry_run})
             response_body = send_request("DELETE", url)
@@ -191,7 +191,7 @@ module Ganeti
         #   boolean:    static (optional)
         #
         # Return:
-        #   job id
+        #   string job id
         def instance_get_info(name, static = 0)
             url = get_url("instances/#{name}/info", {"static" => static})
             response_body = send_request("GET", url)
@@ -216,7 +216,7 @@ module Ganeti
         #   boolean dry_run (optional)
         #
         # Return:
-        #   job id
+        #   string job id
         def instance_reboot(name, type = "soft", ignore_secondaries = 0, dry_run = 0)
             url = get_url("instances/#{name}/reboot", {"type" => type, "ignore_secondaries" => ignore_secondaries, "dry_run" => 0})
             response_body = send_request("POST", url)
@@ -233,7 +233,7 @@ module Ganeti
         #   boolean dry_run (optional)
         #
         # Return:
-        #   job id
+        #   string job id
         def instance_shutdown(name, dry_run = 0)
             url = get_url("instances/#{name}/shutdown", {"dry-run" => dry_run})
             response_body = send_request("PUT", url)
@@ -251,7 +251,7 @@ module Ganeti
         #   boolean dry_run (optional)
         #
         # Return:
-        #   job id
+        #   string job id
         def instance_startup(name, force = 0, dry_run=0)
             url = get_url("instances/#{name}/startup", {"force" => force, "dry-run" => dry_run})
             response_body = send_request("PUT", url)
@@ -268,7 +268,7 @@ module Ganeti
         #   boolean nostartup (optional)
         #
         # Return:
-        #   job id
+        #   string job id
         def instance_reinstall(name, os_name, nostartup = 0)
             url = get_url("instances/#{name}/reinstall", {"os" => os_name, "nostartup" => nostartup})
             response_body = send_request("POST", url)
@@ -290,7 +290,7 @@ module Ganeti
         #   string  disks: comma seperated list of disk indexes
         #
         # Return:
-        #   job id
+        #   string job id
         def instance_replace_disks(name, mode = "replace_auto", iallocator  = "", remote_node = "", disks = "")
             url = get_url("instances/#{name}/replace-disks", {"mode" => mode, "iallocator" => iallocator, "remote_node" => remote_node, "disks" => disks})
             response_body = send_request("POST", url)
@@ -307,7 +307,7 @@ module Ganeti
         #   boolean ignore_size (optional)
         #
         # Return:
-        #   job id
+        #   string job id
         def instance_activate_disks(name, ignore_size = 0)
             url = get_url("instances/#{name}/activate-disks", {"ignore_size" => ignore_size})
             response_body = send_request("PUT", url)
@@ -322,7 +322,7 @@ module Ganeti
         #   string name: name of the instance
         #
         # Return:
-        #   job id
+        #   string job id
         def instance_deactivate_disks(name)
             url = get_url("instances/#{name}/deactivate-disks")
             response_body = send_request("PUT", url)
@@ -338,7 +338,7 @@ module Ganeti
         #   string name: name of the instance
         #
         # Return:
-        #   Array of tags
+        #   array of tags
         def instance_get_tags(name)
             url = get_url("instances/#{name}/tags")
             response_body = send_request("GET", url)
@@ -355,7 +355,7 @@ module Ganeti
         #   boolean dry_run (optional)
         #
         # Return:
-        #   job id
+        #   string job id
         def instance_create_tags(name, tags, dry_run = 0)
             url = get_url("instances/#{name}/tags", {'dry-run' => dry_run, 'tag' => tags})
             response_body = send_request("PUT", url)
@@ -372,7 +372,7 @@ module Ganeti
         #   boolean dry_run (optional)
         #
         # Return:
-        #   job id
+        #   string job id
         def instance_delete_tags(name, tags, dry_run = 0)
             url = get_url("instances/#{name}/tags",  {'dry-run' => dry_run, 'tag' => tags})
             response_body = send_request("DELETE", url)
@@ -384,7 +384,7 @@ module Ganeti
         #   Returns a dictionary of jobs
         # 
         # Return:
-        #   Array of GanetiJob objects
+        #   array of GanetiJob objects
         def jobs_get
             url = get_url("jobs")
             response_body = send_request("GET", url)
@@ -468,7 +468,7 @@ module Ganeti
         #   string job_id: id of a job
         #
         # Return:
-        #   job id
+        #   string job id
         def job_delete(job_id)
             url = get_url("jobs/#{job_id}")
             response_body = send_request("DELETE", url)
@@ -484,7 +484,7 @@ module Ganeti
         #   boolean: bulk (optional)
         #
         # Return:
-        #   Array of GanetiNode objects
+        #   array of GanetiNode objects
         def nodes_get(bulk = 0)
             url = get_url("nodes", {"bulk", bulk})
             response_body = send_request("GET", url)
@@ -524,7 +524,7 @@ module Ganeti
         #   string remote_node:
         #
         # Return:
-        #   job id
+        #   string job id
         def node_evaluate(name, iallocator = "", remote_node = "")
            url = get_url("nodes/#{name}/evacuate", {"iallocator" => iallocator, "remote_node" => remote_node}) 
            response_body = send_request("POST", url)
@@ -541,7 +541,7 @@ module Ganeti
         #   boolean live (optional)
         #
         # Return:
-        #   job id
+        #   string job id
         def node_migrate(name, live = 0)
             url = get_url("nodes/#{name}/migrate", {"live" => live})
             response_body = send_request("POST", url)
@@ -590,10 +590,13 @@ module Ganeti
         #   boolean force (optional)
         #
         # Return:
-        #   job id
+        #   string job id
         def node_change_role(name, role, force = 0)
             url = get_url("nodes/#{name}/role", {"role" => role, "force" => force})
-            body = "#{role}"
+            # This is again quirck in the RAPI. The string needs to have escaped 
+            # quotes becouse of pythons "non-stric" JSON handling
+            # http://code.google.com/p/ganeti/issues/detail?id=118
+            body = "\"#{role}\""
             response_body = send_request("PUT", url, body)
 
             return response_body
@@ -610,7 +613,7 @@ module Ganeti
         #   string output_fields: fields it needs to return back
         # 
         # Return:
-        #   job id
+        #   string job id
         def node_get_storage(name, storage_type = "", output_fields = "")
             url = get_url("nodes/#{name}/storage", {"storage_type" => storage_type, "output_fields" => output_fields})
             response_body = send_request("GET", url)
@@ -628,7 +631,7 @@ module Ganeti
         #   string  storage_unit_name: name of the storage unit
         #   boolean allocatable (optional)
         # Return:
-        #   job id
+        #   string job id
         def node_modify_storage(name, storage_unit_name, storage_type, allocatable = 0)
             url = get_url("nodes/#{name}/storage/modify", {"name" => storage_unit_name, "storage_type" => storage_type, "allocatable" => allocatable})
             response_body = send_request("PUT", url)
@@ -646,7 +649,7 @@ module Ganeti
         #   string storage_type: name of the storage type
         #
         # Return:
-        #   job id
+        #   string job id
         def node_repair_storage(name, storage_name, storage_type = "lvm-vg")
             url = get_url("nodes/#{name}/storage/repair",{"storage_type" => storage_type, "name" => storage_name})
             response_body = send_request("PUT", url)
@@ -683,7 +686,7 @@ module Ganeti
         #   boolean dry_run (optional)
         #
         # Return:
-        #   job id
+        #   string job id
         def node_create_tags(name, tags, dry_run = 0)
             url = get_url("nodes/#{name}/tags", {"tag" => tags, "dry-run" => dry_run})
             response_body = send_request("PUT", url)
@@ -702,7 +705,7 @@ module Ganeti
         #   array  tags: Array of tags, tags are strings
         #
         # Return:
-        #   job id
+        #   string job id
         def node_delete_tags(name, tags, dry_run = 0)
             url = get_url("nodes/#{name}/tags", {"tag" => tags, "dry-run" => dry_run})
             response_body = send_request("DELETE", url)
@@ -734,7 +737,7 @@ module Ganeti
         #       ["tag1", "tag2", "tag3"]
         #
         # Return:
-        #   Array of tags, tags are strings
+        #   array of tags, tags are strings
         def tags_get
             url = get_url("tags")
             response_body = send_request("GET", url)
@@ -752,7 +755,7 @@ module Ganeti
         #   boolean dry_run (optional)
         #
         # Return:
-        #   job id
+        #   string job id
         def tags_create(tags, dry_run = 0)
             url = get_url("tags", {"tag" => tags, "dry-run" => dry_run})
             response_body = send_request("PUT", url)
@@ -771,7 +774,7 @@ module Ganeti
         #   boolean dry_run (optional)
         #
         # Return:
-        #   job id
+        #   string job id
         def tags_delete(tags, dry_run = 0)
             url = get_url("tags", {"tag" => tags, "dry-run" => dry_run})
             response_body = send_request("DELETE", url)
@@ -786,7 +789,7 @@ module Ganeti
         #   Returns the remote API version. Ganeti 1.2 returns 1 and Ganeti 2.0 returns 2
         #
         # Return:
-        #   version number
+        #   string version number
         def version_get
             url = get_url("version")
             response_body = send_request("GET", url)

@@ -1,7 +1,5 @@
 == Todo
 
-    1. Manually test the following methods + fix when bugs found
-        1.16.   node_change_role
     2. Add some error handling
     3. Make some code improvements
     5. Improve this README with better docs 
