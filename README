@@ -1,7 +1,5 @@
 == Todo
 
-    2. Add some error handling
-    3. Make some code improvements
     5. Improve this README with better docs 
     6. Write tests!
 
@@ -16,16 +14,16 @@
 
 == Usage
     
-    # the last parameter is a boolean (true|false) to indicate if you want to display the response.
-    # this might be handy for debugging purposes
-    client = GanetiClient::Client.new("your-host-and-port", "username", "password", boolean)
+    # Create a client instance
+    client = GanetiClient::Client.new("host:port", "username", "password")
 
     # now you should be able to access the api resources by using the client instance. 
     # example:
     info = client.info_get
     => #<GanetiInfo:0x10151bb78>
 
-    # most methods return an object. When you use .to_json on an object, you get the json object returned
+    # most methods return an object. When you use .to_json on an object, you get 
+    # the json object returned
     # then you can see all the attributes available
     info.name
     => "hostname"
@@ -35,13 +33,14 @@
 
     1. Fork the project
     2. Add your changes
-    3. Write tests
+    3. Write tests for your changes
     4. Send a pull request
 
 
 == Author
     
     Michaël Rigart
+    http://www.netronix.be
 
 
 == License

@@ -33,6 +33,4 @@ require 'ganeti_client/ganeti_object'
 
 
 module Ganeti
-
-
 end
