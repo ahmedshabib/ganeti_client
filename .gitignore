@@ -10,3 +10,4 @@ pkg
 *.gem
 *.lock
 *.swp
+personal.yml

@@ -1,0 +1,53 @@
+login:
+    host: "host"
+    user: "user"
+    password: "password"
+instance:
+    name: "name"
+    bulk: 0
+    dry-run: 1
+    static: 0
+    reboot-type: "soft"
+    ignore-secondaries: 0
+    force: 0
+    nostartup: 0
+    replace-mode: "replace_auto"
+    iallocator: ""
+    remote_nocde: ""
+    disks: ""
+    ignore-size: 0
+    info:
+      hypervisor: "kvm"
+      disk_template: "plain"
+      pnode: "pnode"
+      instance_name: "instancename"
+      name: "name"
+      os: "os"
+      vcpus: "vcpus"
+      memory: "4096"
+      disks: "--- \n- 25600"
+      kernel-path: "/boot/vmlinuz-2.6-kvmU"
+
+node:
+    name: "nodename"
+    bulk: 0
+    iallocator: ""
+    remote-node: ""
+    live: 0
+    role: 'master'
+    force: 0
+    storage-type: ""
+    output-fields: ""
+    storage-unit-name: ""
+    storage-type: ""
+    allocatable: 0
+    storage-name: ""
+    storage-type: "lvm-vg"
+    dry-run: 1
+general:
+    tags: "--- \n- aTag1\n- aTag2\n- aTag3\n- aTag4\n- aTag5\n"
+    dry-run: 1
+    job-id: 344
+        
+
+
