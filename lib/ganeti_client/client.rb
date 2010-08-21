@@ -921,15 +921,19 @@ module Ganeti
                     parse_response(response.body.strip)
                 else
                     response.instance_eval { class << self; attr_accessor :body_parsed; end }
-                    begin; response.body_parsed = parse_response(response.body); rescue; end
-                    response.error! # raises  exception corresponding to http error Net::XXX
+                    begin 
+                        response.body_parsed = parse_response(response.body) 
+                    rescue
+                        # raises  exception corresponding to http error Net::XXX
+                        puts response.error! 
+                    end
                 end
             end
         end
 
 
         # Description:
-        #   TEST
+        #   parse the response body to JSON
         #
         # Parameters:
         #   string response_body
