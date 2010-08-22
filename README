@@ -1,10 +1,12 @@
-== Todo
-
-    5. Improve this README with better docs 
-    6. Write tests!
-
-
 == About
+
+    This is a client for the Ganeti RAPI written in Ruby.
+    For more information on Ganeti, visit:
+        - http://code.google.com/p/ganeti/
+        - http://ganeti-doc.googlecode.com/svn/ganeti-2.1/html/rapi.html
+
+    This client has been tested using ruby 1.8.7 (2009-06-12 patchlevel 174)
+    and Ganeti 2.1.6
 
 
 == Installation
@@ -13,6 +15,11 @@
 
 
 == Usage
+    # When using irb require the library first
+    require 'ganeti_client'
+
+    # When using in combination of rails, add it to the Gemfile
+    
     
     # Create a client instance
     client = GanetiClient::Client.new("host:port", "username", "password")
@@ -28,6 +35,8 @@
     info.name
     => "hostname"
 
+    # More info can be found on the wiki page: http://wiki.github.com/netronix/ganeti_client/
+
 
 == Contributing
 
@@ -39,7 +48,8 @@
 
 == Author
     
-    Michaël Rigart
+    Michaël Rigart 
+    michael@netronix.be
     http://www.netronix.be
 
 
