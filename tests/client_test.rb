@@ -6,7 +6,7 @@ class ClientTest < Test::Unit::TestCase
     
     context "A client instance" do
         setup do
-           @data = YAML.load_file('fixtures/personal.yml')
+            @data = YAML.load_file('fixtures/personal.yml')
             @client = Ganeti::Client.new(@data['login']['host'], @data['login']['user'], @data['login']['password'])
         end
 
@@ -19,7 +19,6 @@ class ClientTest < Test::Unit::TestCase
         end
 
         should "return String" do
-            name = 'netronix.be'
             assert_kind_of String, @client.redistribute_config
             assert_kind_of String, @client.instance_delete(@data['instance']['name'], @data['instance']['dry-run'])
             assert_kind_of String, @client.instance_get_info(@data['instance']['name'], @data['instance']['static'])
@@ -30,9 +29,9 @@ class ClientTest < Test::Unit::TestCase
             assert_kind_of String, @client.instance_replace_disks(@data['instance']['name'], @data['instance']['mode'], @data['instance']['iallocator'], @data['instance']['remote-node'], @data['instance']['disks'])
             assert_kind_of String, @client.instance_activate_disks(@data['instance']['name'], @data['instance']['ignore-size'])
             assert_kind_of String, @client.instance_deactivate_disks(@data['instance']['name'])
-            assert_kind_of String, @client.instance_create_tags(@data['instance']['name'], @data['tags'], @data['instance']['dry-run'])
-            assert_kind_of String, @client.instance_delete_tags(@data['instance']['name'], @data['tags'], @data['instance']['dry-run'])
-            assert_kind_of String, @client.job_delete(job_id)
+            assert_kind_of String, @client.instance_create_tags(@data['instance']['name'], @data['general']['tags'], @data['instance']['dry-run'])
+            assert_kind_of String, @client.instance_delete_tags(@data['instance']['name'], @data['general']['tags'], @data['instance']['dry-run'])
+            assert_kind_of String, @client.job_delete(@data['general']['job-id'])
             assert_kind_of String, @client.node_evaluate(@data['node']['name'], @data['node']['iallocator'], @data['node']['remote-node'])
             assert_kind_of String, @client.node_migrate(@data['node']['name'], @data['node']['live'])
             assert_kind_of String, @client.node_get_role(@data['node']['name'])
@@ -61,7 +60,6 @@ class ClientTest < Test::Unit::TestCase
         end
 
         should "return a GanetiInstance object" do
-            name = "netronix.be"
             assert_equal @client.instance_get(@data['instance']['name']).class.to_s, 'GanetiInstance'
         end
 
@@ -118,7 +116,7 @@ class ClientTest < Test::Unit::TestCase
         end
 
         should "return a GanetiNode object" do
-            assert_equal @client.node_get(@data['node']['name']), 'GanetiNode'
+            assert_equal @client.node_get(@data['node']['name']).class.to_s, 'GanetiNode'
         end
     end
 end
