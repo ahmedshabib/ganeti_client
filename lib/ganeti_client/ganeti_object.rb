@@ -4,9 +4,12 @@ module Ganeti
         attr_accessor :json_object
 
         def initialize(json = {})
-            self.json_object = json
+            new_json = {}
+            json.each { |key, value| new_json[key.gsub('.', '_')] = value }
+                            
+            self.json_object = new_json
             
-            json.each { |attr_name, attr_value| self.class.send(:define_method, attr_name.to_sym){ return attr_value } }
+            new_json.each { |attr_name, attr_value| self.class.send(:define_method, attr_name.to_sym){ return attr_value } }
         end
 
         def to_json

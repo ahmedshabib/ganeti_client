@@ -10,7 +10,7 @@ begin
     gem.rubyforge_project = "nowarning"
     gem.files = Dir["README","{lib}/**/*"]
 
-    gem.version = "0.0.10"
+    gem.version = "0.0.11"
     gem.author = "Michaël Rigart"
     gem.email = "michael@netronix.be"
     gem.homepage = "http://www.netronix.be"
