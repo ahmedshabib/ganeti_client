@@ -15,6 +15,7 @@ begin
     gem.email = "michael@netronix.be"
     gem.homepage = "http://www.netronix.be"
     gem.add_dependency 'json'
+
   end
   Jeweler::GemcutterTasks.new
 rescue
